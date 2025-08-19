@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@types/cheerio": "^1.0.0",
+    "@types/signale": "^1.4.7",
+    "cheerio": "^1.1.2",
+    "node-cron": "^4.2.1",
+    "signale": "^1.4.0",
+    "telegraf": "^4.16.3"
+  }
+}
