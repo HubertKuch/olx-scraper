@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "@types/cheerio": "^1.0.0",
+    "@types/chunk": "^0.0.2",
     "@types/signale": "^1.4.7",
     "cheerio": "^1.1.2",
+    "chunk": "^0.0.3",
     "node-cron": "^4.2.1",
     "signale": "^1.4.0",
     "telegraf": "^4.16.3"

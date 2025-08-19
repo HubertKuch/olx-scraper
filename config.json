@@ -1,4 +1,4 @@
 {
-  "url": "<>",
+  "url": "https://www.olx.pl/praca/informatyka/programista/?search%5Border%5D=created_at:desc&search%5Bfilter_enum_workplace%5D%5B0%5D=remote_work_possibility&view=list",
   "cron": "0 * * * *"
 }

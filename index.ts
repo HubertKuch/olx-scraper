@@ -3,6 +3,7 @@ import fs from "fs";
 import cron from "node-cron";
 import { Telegraf } from "telegraf";
 import config from "./config.json";
+import chunk from "chunk";
 
 import type { Offer } from "./types";
 import { Signale } from "signale";
@@ -76,18 +77,19 @@ async function makeOffersChat() {
 
     saveOffers(updated);
 
-    await bot.telegram.sendMessage(
-      chatId as number,
-      JSON.stringify(
-        newOffers.map((offer: Offer) => ({
+    chunk(offers, 5).forEach(async (offersChunk) => {
+      const message = JSON.stringify(
+        offersChunk.map((offer: Offer) => ({
           ...offer,
           id: undefined,
           refreshedAt: undefined,
         })),
         null,
         2,
-      ),
-    );
+      );
+
+      await bot.telegram.sendMessage(chatId as number, message);
+    });
 
     return;
   }
