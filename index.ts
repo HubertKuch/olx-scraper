@@ -65,37 +65,39 @@ async function scrapeOffers(url: string) {
 }
 
 async function makeOffersChat() {
-  const offers = await scrapeOffers(config.url);
-  const saved = loadOffers();
-  const savedIds = new Set(saved.map((j: Offer) => j.id));
-  const newOffers = offers.filter((j: Offer) => !savedIds.has(j.id));
+	for (const url of config.urls) {
+		const offers = await scrapeOffers(url);
+		const saved = loadOffers();
+		const savedIds = new Set(saved.map((j: Offer) => j.id));
+		const newOffers = offers.filter((j: Offer) => !savedIds.has(j.id));
 
-  if (newOffers.length > 0) {
-    logger.success(`✅ Found ${newOffers.length} new offers`);
+		if (newOffers.length > 0) {
+			logger.success(`✅ Found ${newOffers.length} new offers`);
 
-    const updated = [...newOffers, ...saved];
+			const updated = [...newOffers, ...saved];
 
-    saveOffers(updated);
+			saveOffers(updated);
 
-    chunk(offers, 5).forEach(async (offersChunk) => {
-      const message = JSON.stringify(
-        offersChunk.map((offer: Offer) => ({
-          ...offer,
-          id: undefined,
-          refreshedAt: undefined,
-        })),
-        null,
-        2,
-      );
+			chunk(offers, 5).forEach(async (offersChunk) => {
+				const message = JSON.stringify(
+					offersChunk.map((offer: Offer) => ({
+						...offer,
+						id: undefined,
+						refreshedAt: undefined,
+					})),
+					null,
+					2,
+				);
 
-      await bot.telegram.sendMessage(chatId as number, message);
-    });
+				await bot.telegram.sendMessage(chatId as number, message);
+			});
 
-    return;
-  }
+			return;
+		}
 
-  await bot.telegram.sendMessage(chatId as number, "Nothings new");
-  logger.info("Nothings new");
+		await bot.telegram.sendMessage(chatId as number, "Nothings new");
+		logger.info("Nothings new");
+	}
 }
 
 const telegramToken = process.env.TELEGRAM_TOKEN as string;
